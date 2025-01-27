@@ -1,7 +1,11 @@
-import { getEmails } from "@/utils/gmail";
 import styles from "./page.module.css";
+import { getEmails } from "@/utils/gmail";
+import { unstable_noStore as noStore } from "next/cache";
 
 export default async function Home() {
+  // Opt out of static rendering
+  noStore();
+
   const emails = await getEmails();
 
   return (
