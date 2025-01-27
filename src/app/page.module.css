@@ -68,10 +68,7 @@
   padding: 0 20px;
   border: none;
   border: 1px solid transparent;
-  transition:
-    background 0.2s,
-    color 0.2s,
-    border-color 0.2s;
+  transition: background 0.2s, color 0.2s, border-color 0.2s;
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -164,5 +161,152 @@ a.secondary {
 @media (prefers-color-scheme: dark) {
   .logo {
     filter: invert();
+  }
+}
+
+.emailList {
+  width: 100%;
+  max-width: 800px;
+  margin: 2rem auto;
+}
+
+.emailCard {
+  background: #ffffff;
+  border: 1px solid #eaeaea;
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  transition: transform 0.2s;
+}
+
+.emailCard:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.emailFrom {
+  color: #666;
+  font-size: 0.9rem;
+  margin: 0.5rem 0;
+}
+
+.emailDate {
+  color: #888;
+  font-size: 0.8rem;
+}
+
+.emailSnippet {
+  margin-top: 0.5rem;
+  color: #444;
+}
+
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 2rem;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    sans-serif;
+  background: #f8fafc;
+}
+
+.header {
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #e5e9f0;
+}
+
+.header h1 {
+  font-size: 2rem;
+  font-weight: 600;
+  color: #2563eb;
+  margin: 0;
+}
+
+.subheader {
+  color: #64748b;
+  margin: 0.5rem 0 0 0;
+}
+
+.emailList {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.emailCard {
+  padding: 1.5rem;
+  background: white;
+  border: 1px solid #e5e9f0;
+  border-radius: 12px;
+  transition: all 0.2s ease;
+}
+
+.emailCard:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.1);
+  border-color: #93c5fd;
+}
+
+.emailSubject {
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: #1e40af;
+  margin: 0 0 0.5rem 0;
+}
+
+.emailDate {
+  font-size: 0.9rem;
+  color: #64748b;
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  .container {
+    background: #0f172a;
+  }
+
+  .header {
+    border-bottom-color: #1e293b;
+  }
+
+  .header h1 {
+    color: #60a5fa;
+  }
+
+  .subheader {
+    color: #94a3b8;
+  }
+
+  .emailCard {
+    background: #1e293b;
+    border-color: #334155;
+  }
+
+  .emailCard:hover {
+    border-color: #60a5fa;
+    box-shadow: 0 4px 12px rgba(96, 165, 250, 0.1);
+  }
+
+  .emailSubject {
+    color: #93c5fd;
+  }
+
+  .emailDate {
+    color: #94a3b8;
+  }
+}
+
+/* Mobile responsiveness */
+@media (max-width: 600px) {
+  .container {
+    padding: 1rem;
+  }
+
+  .header h1 {
+    font-size: 1.5rem;
+  }
+
+  .emailCard {
+    padding: 1rem;
   }
 }
