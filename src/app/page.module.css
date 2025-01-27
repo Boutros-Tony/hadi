@@ -185,9 +185,9 @@ a.secondary {
 }
 
 .emailFrom {
-  color: #666;
   font-size: 0.9rem;
-  margin: 0.5rem 0;
+  color: #4b5563;
+  margin: 0.25rem 0;
 }
 
 .emailDate {
@@ -293,6 +293,10 @@ a.secondary {
 
   .emailDate {
     color: #94a3b8;
+  }
+
+  .emailFrom {
+    color: #9ca3af;
   }
 }
 

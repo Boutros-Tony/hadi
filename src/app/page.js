@@ -15,6 +15,7 @@ export default async function Home() {
         {emails.map((email) => (
           <div key={email.id} className={styles.emailCard}>
             <h2 className={styles.emailSubject}>{email.subject}</h2>
+            <p className={styles.emailFrom}>{email.from}</p>
             <time className={styles.emailDate}>{email.date}</time>
           </div>
         ))}
