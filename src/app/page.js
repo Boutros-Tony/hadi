@@ -19,8 +19,19 @@ export default async function Home() {
         {emails.map((email) => (
           <div key={email.id} className={styles.emailCard}>
             <h2 className={styles.emailSubject}>{email.subject}</h2>
+            <time className={styles.emailDate}>{email.date}</time>{" "}
             <p className={styles.emailFrom}>{email.from}</p>
-            <time className={styles.emailDate}>{email.date}</time>
+            <br />
+            {email.link && (
+              <a
+                href={email.link}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={styles.emailLink}
+              >
+                Get Code
+              </a>
+            )}
           </div>
         ))}
       </main>
