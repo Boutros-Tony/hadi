@@ -201,143 +201,140 @@ a.secondary {
 }
 
 .container {
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 2rem;
+  min-height: 100vh;
+  background: #141414;
+  color: #ffffff;
   font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
     sans-serif;
-  background: #f8fafc;
+  padding: 2rem 1rem;
 }
 
 .header {
-  margin-bottom: 2rem;
-  padding-bottom: 1rem;
-  border-bottom: 1px solid #e5e9f0;
+  max-width: 1200px;
+  margin: 0 auto 3rem;
+  text-align: center;
+  padding-bottom: 2rem;
+  border-bottom: 2px solid #e50914;
 }
 
 .header h1 {
-  font-size: 2rem;
-  font-weight: 600;
-  color: #2563eb;
+  font-size: 3.5rem;
+  font-weight: 700;
+  color: #e50914;
   margin: 0;
+  letter-spacing: 1px;
 }
 
 .subheader {
-  color: #64748b;
+  color: #ffffff;
   margin: 0.5rem 0 0 0;
+  font-size: 1.2rem;
+  opacity: 0.9;
 }
 
 .emailList {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+  padding: 0 1rem;
 }
 
 .emailCard {
+  background: #181818;
+  border-radius: 4px;
   padding: 1.5rem;
-  background: white;
-  border: 1px solid #e5e9f0;
-  border-radius: 12px;
-  transition: all 0.2s ease;
+  transition: all 0.3s ease;
+  border: 1px solid #333;
 }
 
 .emailCard:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.1);
-  border-color: #93c5fd;
+  transform: translateY(-4px);
+  box-shadow: 0 6px 12px rgba(229, 9, 20, 0.1);
+  border-color: #e50914;
+}
+
+.emailTo {
+  font-size: 0.9rem;
+  color: #999;
+  margin: 0 0 0.75rem 0;
 }
 
 .emailSubject {
-  font-size: 1.1rem;
-  font-weight: 500;
-  color: #1e40af;
-  margin: 0 0 0.5rem 0;
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #ffffff;
+  margin: 0 0 1rem 0;
+  line-height: 1.4;
 }
 
-.emailDate {
+.emailMeta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
   font-size: 0.9rem;
-  color: #64748b;
+  color: #999;
 }
 
-/* Dark mode support */
-@media (prefers-color-scheme: dark) {
-  .container {
-    background: #0f172a;
-  }
-
-  .header {
-    border-bottom-color: #1e293b;
-  }
-
-  .header h1 {
-    color: #60a5fa;
-  }
-
-  .subheader {
-    color: #94a3b8;
-  }
-
-  .emailCard {
-    background: #1e293b;
-    border-color: #334155;
-  }
-
-  .emailCard:hover {
-    border-color: #60a5fa;
-    box-shadow: 0 4px 12px rgba(96, 165, 250, 0.1);
-  }
-
-  .emailSubject {
-    color: #93c5fd;
-  }
-
-  .emailDate {
-    color: #94a3b8;
-  }
-
-  .emailFrom {
-    color: #9ca3af;
-  }
-}
-
-/* Mobile responsiveness */
-@media (max-width: 600px) {
-  .container {
-    padding: 1rem;
-  }
-
-  .header h1 {
-    font-size: 1.5rem;
-  }
-
-  .emailCard {
-    padding: 1rem;
-  }
+.emailDate,
+.emailFrom {
+  margin: 0;
 }
 
 .emailLink {
   display: inline-block;
-  margin-top: 0.5rem;
-  padding: 0.5rem 1rem;
-  background-color: #2563eb;
+  background-color: #e50914;
   color: white;
-  border-radius: 6px;
+  padding: 0.8rem 2rem;
+  border-radius: 4px;
   text-decoration: none;
-  font-size: 0.9rem;
+  font-weight: 500;
   transition: background-color 0.2s;
+  text-align: center;
+  width: 100%;
 }
 
 .emailLink:hover {
-  background-color: #1d4ed8;
+  background-color: #f40612;
 }
 
-/* In dark mode section */
-@media (prefers-color-scheme: dark) {
-  .emailLink {
-    background-color: #3b82f6;
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+  .container {
+    padding: 1rem;
   }
 
-  .emailLink:hover {
-    background-color: #60a5fa;
+  .header h1 {
+    font-size: 2.5rem;
   }
+
+  .subheader {
+    font-size: 1rem;
+  }
+
+  .emailList {
+    grid-template-columns: 1fr;
+  }
+
+  .emailCard {
+    padding: 1.25rem;
+  }
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.emailCard {
+  animation: fadeIn 0.3s ease-out;
 }

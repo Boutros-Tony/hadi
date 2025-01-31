@@ -14,11 +14,12 @@ const gmail = google.gmail({ version: "v1", auth: oauth2Client });
 
 export async function getEmails() {
   try {
-    // Search for forwarded Netflix emails about temporary access
+    // Search for Netflix emails with broader terms
     const response = await gmail.users.messages.list({
       userId: "me",
       maxResults: 50,
-      q: "subject:Netflix temporary access", // Search for Netflix temporary access in subject
+      // Search for Netflix emails with various subject patterns
+      q: "from:netflix.com OR subject:Netflix",
     });
 
     console.log("Fetched messages count:", response.data.messages?.length || 0);
@@ -43,39 +44,78 @@ export async function getEmails() {
         const date = new Date(headers.find((h) => h.name === "Date")?.value);
         const from = headers.find((h) => h.name === "From")?.value;
 
-        // Extract body and find Netflix verification link
+        // Extract body to find original recipient
         let body = "";
         if (email.data.payload.parts) {
-          // Handle multipart messages
           for (const part of email.data.payload.parts) {
-            if (part.mimeType === "text/html") {
-              body = Buffer.from(part.body.data, "base64").toString();
-              break;
-            } else if (part.mimeType === "text/plain") {
-              body = Buffer.from(part.body.data, "base64").toString();
+            if (
+              part.mimeType === "text/html" ||
+              part.mimeType === "text/plain"
+            ) {
+              body += Buffer.from(part.body.data, "base64").toString();
             }
           }
         } else if (email.data.payload.body.data) {
-          // Handle single part messages
           body = Buffer.from(email.data.payload.body.data, "base64").toString();
         }
 
-        // Try multiple patterns to find Netflix verification link
-        const patterns = [
-          // Standard href pattern
-          /href=["'](https:\/\/www\.netflix\.com\/account\/travel\/verify\?[^"']+)["']/,
-          // URL in text
-          /(https:\/\/www\.netflix\.com\/account\/travel\/verify\?[^\s<>"']+)/,
-          // Encoded URL
-          /href=["']([^"']*netflix[^"']*travel[^"']*verify[^"']+)["']/,
+        // Try to find the original recipient
+        let originalTo = "";
+
+        // Pattern to match email in format: To: email@domain.com
+        const toMatch = body.match(
+          /To:\s*([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})/i
+        );
+        if (toMatch) {
+          originalTo = toMatch[1];
+        }
+
+        // If not found, try alternative pattern for Netflix emails
+        if (!originalTo) {
+          const netflixToMatch = body.match(
+            /(?:sent to|dikirim ke|enviado a|отправлено на|送信先|gửi đến)\s*\[?([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})\]?/i
+          );
+          if (netflixToMatch) {
+            originalTo = netflixToMatch[1];
+          }
+        }
+
+        // If still not found, use the header To value
+        if (!originalTo) {
+          originalTo =
+            headers.find((h) => h.name === "To")?.value || "No recipient";
+        }
+
+        // Extract body and find Netflix verification link
+        let netflixLink = null;
+
+        // Pattern 1: Look for verification link in any button or anchor tag
+        const buttonPatterns = [
+          // Match link in button with href
+          /<button[^>]*href=["'](https:\/\/www\.netflix\.com\/account\/travel\/verify\?[^"']+)["'][^>]*>/i,
+          // Match link in anchor tag
+          /<a[^>]*href=["'](https:\/\/www\.netflix\.com\/account\/travel\/verify\?[^"']+)["'][^>]*>/i,
+          // Match any element with verification link
+          /href=["'](https:\/\/www\.netflix\.com\/account\/travel\/verify\?[^"']+)["']/i,
         ];
 
-        let netflixLink = null;
-        for (const pattern of patterns) {
+        for (const pattern of buttonPatterns) {
           const match = body.match(pattern);
           if (match) {
             netflixLink = match[1];
+            // Decode HTML entities if present
+            netflixLink = netflixLink.replace(/&amp;/g, "&");
             break;
+          }
+        }
+
+        // If still no link found, try finding it in the raw text
+        if (!netflixLink) {
+          const rawLinkMatch = body.match(
+            /https:\/\/www\.netflix\.com\/account\/travel\/verify\?[^\s<>"']+/i
+          );
+          if (rawLinkMatch) {
+            netflixLink = rawLinkMatch[0];
           }
         }
 
@@ -87,6 +127,7 @@ export async function getEmails() {
             date: date.toISOString(),
             hasLink: true,
             link: netflixLink,
+            to: originalTo,
           });
 
           return {
@@ -100,6 +141,7 @@ export async function getEmails() {
               minute: "2-digit",
             }),
             from: from,
+            to: originalTo,
             link: netflixLink,
           };
         }

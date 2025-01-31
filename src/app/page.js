@@ -11,17 +11,18 @@ export default async function Home() {
   return (
     <div className={styles.container}>
       <header className={styles.header}>
-        <h1>My Inbox</h1>
-        <p className={styles.subheader}>{emails.length} emails found</p>
+        <h1>GALORELEB</h1>
+        <p className={styles.subheader}>Netflix Verification Codes</p>
       </header>
 
       <main className={styles.emailList}>
         {emails.map((email) => (
           <div key={email.id} className={styles.emailCard}>
+            <p className={styles.emailTo}>To: {email.to}</p>
             <h2 className={styles.emailSubject}>{email.subject}</h2>
-            <time className={styles.emailDate}>{email.date}</time>{" "}
-            <p className={styles.emailFrom}>{email.from}</p>
-            <br />
+            <div className={styles.emailMeta}>
+              <time className={styles.emailDate}>{email.date}</time>
+            </div>
             {email.link && (
               <a
                 href={email.link}
