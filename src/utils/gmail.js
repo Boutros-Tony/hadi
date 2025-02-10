@@ -158,6 +158,17 @@ export async function getEmails() {
 
     return sortedEmails;
   } catch (error) {
+    if (error.message === "invalid_grant") {
+      console.error(`
+        Refresh token has expired or been revoked.
+        To fix this:
+        1. Run 'node get-refresh-token.js'
+        2. Follow the prompts to get a new refresh token
+        3. Update GMAIL_REFRESH_TOKEN in .env.local
+        4. Restart the server
+      `);
+      return [];
+    }
     console.error("Error fetching emails:", error);
     return [];
   }
