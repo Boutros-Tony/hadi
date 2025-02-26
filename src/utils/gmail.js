@@ -161,6 +161,11 @@ export async function getEmails() {
     if (error.message === "invalid_grant") {
       console.error(`
         Refresh token has expired or been revoked.
+        This can happen when:
+        - Gmail has security updates
+        - Google Account settings change
+        - The token hasn't been used for a long time
+        
         To fix this:
         1. Run 'node get-refresh-token.js'
         2. Follow the prompts to get a new refresh token
